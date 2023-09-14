@@ -13,4 +13,12 @@ class Success<S extends Object, F extends Object> implements Result<S, F> {
 
   @override
   bool isSuccess() => true;
+
+  @override
+  W fold<W>(
+    W Function(S success) onSuccess,
+    W Function(F failure) onFailure,
+  ) {
+    return onSuccess(_success);
+  }
 }

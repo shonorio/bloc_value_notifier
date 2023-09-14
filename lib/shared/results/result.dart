@@ -11,4 +11,9 @@ abstract class Result<S extends Object, F extends Object> {
   bool isError();
 
   bool isSuccess();
+
+  W fold<W>(
+    W Function(S success) onSuccess,
+    W Function(F failure) onFailure,
+  );
 }
