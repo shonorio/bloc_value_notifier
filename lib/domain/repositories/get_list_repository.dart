@@ -12,7 +12,7 @@ import '../entities/item_entity.dart';
 class GetListRepository {
   AsyncResult<Iterable<ItemEntity>> call() async {
     return Future.delayed(
-      const Duration(milliseconds: 200),
+      const Duration(seconds: 1),
       () {
         if (Random().nextBool()) {
           return Success(_generateItens());
@@ -23,6 +23,8 @@ class GetListRepository {
     );
   }
 
-  Iterable<ItemEntity> _generateItens() =>
-      Iterable.generate(10, (i) => ItemEntity('Item ${i + 1}'));
+  Iterable<ItemEntity> _generateItens() => Iterable.generate(
+        Random().nextInt(100),
+        (i) => ItemEntity('Item ${i + 1}'),
+      );
 }
