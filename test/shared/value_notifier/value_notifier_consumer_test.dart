@@ -105,5 +105,53 @@ void main() {
         expect(didCallListener, true);
       },
     );
+
+    test(
+      'must assert if listener is null but listenWhen is provided',
+      () {
+        final notifier = ValueNotifier<int>(0);
+
+        expect(
+          () => ValueNotifierConsumer<int>(
+            valueListenable: notifier,
+            builder: (context, value, child) => Container(),
+            listenWhen: (value) => value > 0,
+          ),
+          throwsAssertionError,
+        );
+      },
+    );
+
+    test(
+      'must not assert if both listener and listenWhen are provided',
+      () {
+        final notifier = ValueNotifier<int>(0);
+
+        expect(
+          () => ValueNotifierConsumer<int>(
+            valueListenable: notifier,
+            builder: (context, value, child) => Container(),
+            listener: (context, value) {},
+            listenWhen: (value) => value > 0,
+          ),
+          returnsNormally,
+        );
+      },
+    );
+
+    test(
+      'must not assert if both listener and listenWhen are null',
+      () {
+        final notifier = ValueNotifier<int>(0);
+
+        expect(
+          () => ValueNotifierConsumer<int>(
+            valueListenable: notifier,
+            builder: (context, value, child) => Container(),
+          ),
+          returnsNormally,
+        );
+      },
+    );
   });
 }
