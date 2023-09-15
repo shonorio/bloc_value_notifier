@@ -1,5 +1,4 @@
 import '../../domain/entities/item_entity.dart';
-import '../../shared/app/app_failure.dart';
 
 sealed class AppState {
   const AppState();
