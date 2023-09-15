@@ -78,5 +78,32 @@ void main() {
         expect(find.text('1'), findsOneWidget);
       },
     );
+
+    testWidgets(
+      'calls listener when listenWhen is true',
+      (tester) async {
+        final notifier = ValueNotifier<int>(0);
+        bool didCallListener = false;
+
+        await tester.pumpWidget(
+          ValueNotifierConsumer<int>(
+            valueListenable: notifier,
+            builder: (context, value, child) {
+              return Text(
+                '$value',
+                textDirection: TextDirection.ltr,
+              );
+            },
+            listener: (context, value) => didCallListener = true,
+            listenWhen: (value) => value > 0,
+          ),
+        );
+
+        notifier.value = 1;
+        await tester.pump();
+
+        expect(didCallListener, true);
+      },
+    );
   });
 }
