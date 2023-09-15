@@ -48,5 +48,35 @@ void main() {
         expect(find.text('1'), findsOneWidget);
       },
     );
+
+    testWidgets(
+      'rebuilds only when buildWhen is true',
+      (tester) async {
+        final notifier = ValueNotifier<int>(0);
+
+        await tester.pumpWidget(
+          ValueNotifierConsumer<int>(
+            valueListenable: notifier,
+            buildWhen: (value) => value > 0,
+            builder: (context, value, child) {
+              return Text(
+                '$value',
+                textDirection: TextDirection.ltr,
+              );
+            },
+          ),
+        );
+
+        notifier.value = 0;
+        await tester.pump();
+
+        expect(find.text('0'), findsOneWidget);
+
+        notifier.value = 1;
+        await tester.pump();
+
+        expect(find.text('1'), findsOneWidget);
+      },
+    );
   });
 }
